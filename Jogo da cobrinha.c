@@ -124,31 +124,31 @@ void imprimirTudo() {
 
 int func_movimento(char direcao) {
     // Lê o movimento do jogador
-    if (direcao == 'W' || direcao == 'w') {
-        cobrinha[0].x = 7 - 1;
-        cobrinha[0].y = 7;
-        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
-        return 1;
+    if (direcao == 'W' || direcao == 'w') { //Indo para cima
+        arena[cobrinha[0].x][cobrinha[0].y] = ' ';
+        cobrinha[0].x--; //linha -1 coluna não mexe
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
+        return 1; //retorna 1 para indicar que o movimento foi realizado
     }
-    else if (direcao == 'A' || direcao == 'a') {
-        cobrinha[0].x = 7;
-        cobrinha[0].y = 7 - 1;
-        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
-        return 1;
+    else if (direcao == 'A' || direcao == 'a') { //Indo para esquerda
+        arena[cobrinha[0].x][cobrinha[0].y] = ' ';
+        cobrinha[0].y--; //coluna -1 linha não mexe
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
+        return 1; //retorna 1 para indicar que o movimento foi realizado
     }
-    else if (direcao == 'S' || direcao == 's') {
-        cobrinha[0].x = 7;
-        cobrinha[0].y = 7 + 1;
-        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
-        return 1;
+    else if (direcao == 'S' || direcao == 's') { //Indo para baixo
+        arena[cobrinha[0].x][cobrinha[0].y] = ' ';
+        cobrinha[0].x++; //linha -1 coluna não mexe
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
+        return 1; //retorna 1 para indicar que o movimento foi realizado
     }
-    else if (direcao == 'D' || direcao == 'd') {
-        cobrinha[0].x = 7 + 1;
-        cobrinha[0].y = 7;
-        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
-        return 1;
+    else if (direcao == 'D' || direcao == 'd') { //Indo para direita
+        arena[cobrinha[0].x][cobrinha[0].y] = ' ';
+        cobrinha[0].y++; //coluna +1 linha não mexe
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
+        return 1; //retorna 1 para indicar que o movimento foi realizado
     }
-    else { return 0; }
+    else { return 0; } //retorna 0 para indicar que o movimento NÃO foi realizado
 }
 
 int main(void) {
