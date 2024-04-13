@@ -1,0 +1,7 @@
+﻿  Jogo da cobrinha.c
+C:\Users\ronal\source\repos\Projeto ED\Projeto ED\Jogo da cobrinha.c(15,27): warning C4305: '=': truncamento de 'int' para 'char'
+  Gerando código
+  Previous IPDB not found, fall back to full compilation.
+  All 5 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finalizada a geração de código
+  Projeto ED.vcxproj -> C:\Users\ronal\source\repos\Projeto ED\x64\Release\Projeto ED.exe

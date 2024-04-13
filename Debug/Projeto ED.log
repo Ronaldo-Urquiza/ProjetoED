@@ -1,0 +1,3 @@
+﻿  Jogo da cobrinha.c
+C:\Users\ronal\source\repos\Projeto ED\Projeto ED\Jogo da cobrinha.c(15,27): warning C4305: '=': truncamento de 'int' para 'char'
+  Projeto ED.vcxproj -> C:\Users\ronal\source\repos\Projeto ED\Debug\Projeto ED.exe
