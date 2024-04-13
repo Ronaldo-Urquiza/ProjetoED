@@ -17,7 +17,7 @@ typedef struct {
 void gerar_arena();
 void gerar_maçã();
 void imprimirTudo();
-
+int func_movimento(char direcao);
 //Estruturando cobrinha em forma de lista ordenada -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 const unsigned MAX = 169; //Tamanho da arena tirando as bordas
@@ -59,6 +59,7 @@ void imprimir() {
 // Variáveis globais
 char arena[15][15]; //Layout do jogo
 Posição cobrinha[169]; //Criando variável chamada "cobrinha" do tipo Posição
+char movimento; //Instrução para movimento da cobrinha
 
 void gerar_arena() {
     int i, j;
@@ -121,10 +122,54 @@ void imprimirTudo() {
     }
 }
 
+int func_movimento(char direcao) {
+    // Lê o movimento do jogador
+    if (direcao == 'W' || direcao == 'w') {
+        cobrinha[0].x = 7 - 1;
+        cobrinha[0].y = 7;
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
+        return 1;
+    }
+    else if (direcao == 'A' || direcao == 'a') {
+        cobrinha[0].x = 7;
+        cobrinha[0].y = 7 - 1;
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
+        return 1;
+    }
+    else if (direcao == 'S' || direcao == 's') {
+        cobrinha[0].x = 7;
+        cobrinha[0].y = 7 + 1;
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
+        return 1;
+    }
+    else if (direcao == 'D' || direcao == 'd') {
+        cobrinha[0].x = 7 + 1;
+        cobrinha[0].y = 7;
+        arena[cobrinha[0].x][cobrinha[0].y] = 'O';
+        return 1;
+    }
+    else { return 0; }
+}
+
 int main(void) {
     gerar_arena(); //Gerar arena da cobrinha
     adicionar_cobrinha(); //Gerar cobrinha no meio da arena
     gerar_maçã();//Gerar maçã em uma posição aleatória da arena
     imprimirTudo(); //Gerar tudo no terminal
+
+    printf("\n");
+    printf("Digite para onde você quer ir com W-A-S-D: ");
+    scanf("%c", &movimento);
+    //printf("%c", movimento); //Testando se o movimento está sendo captado
+
+    if (func_movimento(movimento) == 1) {
+        system("cls || clear || cls"); //Limpa terminal
+        imprimirTudo(); //Gerar tudo no terminal
+    }
+    else {
+        printf("Comando inválido, nenhum movimento foi realizado\n");
+        func_movimento(movimento);
+    }
+
     return 0;
 }
