@@ -159,16 +159,21 @@ int main(void) {
 
     printf("\n");
     printf("Digite para onde você quer ir com W-A-S-D: ");
-    scanf("%c", &movimento);
+    scanf_s("%c", &movimento);
     //printf("%c", movimento); //Testando se o movimento está sendo captado
 
-    if (func_movimento(movimento) == 1) {
-        system("cls || clear || cls"); //Limpa terminal
-        imprimirTudo(); //Gerar tudo no terminal
-    }
-    else {
-        printf("Comando inválido, nenhum movimento foi realizado\n");
-        func_movimento(movimento);
+    while (movimento != 'Q') {
+        if (func_movimento(movimento) == 1) {
+            system("cls || clear || cls"); //Limpa terminal
+            imprimirTudo(); //Gerar tudo no terminal
+        }
+        else {
+            printf("Comando inválido, nenhum movimento foi realizado\n");
+        }
+
+        printf("\n");
+        printf("Digite para onde você quer ir com W-A-S-D: ");
+        scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
     }
 
     return 0;
