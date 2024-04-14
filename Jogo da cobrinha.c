@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h> // Para a função Sleep()
 
 // Definindo constantes
 int linhas = 15;
@@ -18,6 +19,7 @@ void gerar_arena();
 void gerar_maçã();
 void imprimirTudo();
 int func_movimento(char direcao);
+void print_game_over();
 //Estruturando cobrinha em forma de lista ordenada -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 const unsigned MAX = 169; //Tamanho da arena tirando as bordas
@@ -60,6 +62,7 @@ void imprimir() {
 char arena[15][15]; //Layout do jogo
 Posição cobrinha[169]; //Criando variável chamada "cobrinha" do tipo Posição
 char movimento; //Instrução para movimento da cobrinha
+char resposta[10];
 
 void gerar_arena() {
     int i, j;
@@ -127,54 +130,129 @@ int func_movimento(char direcao) {
     if (direcao == 'W' || direcao == 'w') { //Indo para cima
         arena[cobrinha[0].x][cobrinha[0].y] = ' ';
         cobrinha[0].x--; //linha -1 coluna não mexe
+
+        if (cobrinha[0].x == 0 || cobrinha[0].x == 14) {
+            return 0;
+        }
+
         arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
         return 1; //retorna 1 para indicar que o movimento foi realizado
     }
     else if (direcao == 'A' || direcao == 'a') { //Indo para esquerda
         arena[cobrinha[0].x][cobrinha[0].y] = ' ';
         cobrinha[0].y--; //coluna -1 linha não mexe
+
+        if (cobrinha[0].y == 0 || cobrinha[0].y == 14) {
+            return 0;
+        }
+
         arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
         return 1; //retorna 1 para indicar que o movimento foi realizado
     }
     else if (direcao == 'S' || direcao == 's') { //Indo para baixo
         arena[cobrinha[0].x][cobrinha[0].y] = ' ';
         cobrinha[0].x++; //linha -1 coluna não mexe
+
+        if (cobrinha[0].x == 0 || cobrinha[0].x == 14) {
+            return 0;
+        }
+
         arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
         return 1; //retorna 1 para indicar que o movimento foi realizado
     }
     else if (direcao == 'D' || direcao == 'd') { //Indo para direita
         arena[cobrinha[0].x][cobrinha[0].y] = ' ';
         cobrinha[0].y++; //coluna +1 linha não mexe
+
+        if (cobrinha[0].y == 0 || cobrinha[0].y == 14) {
+            return 0;
+        }
+
         arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
         return 1; //retorna 1 para indicar que o movimento foi realizado
     }
-    else { return 0; } //retorna 0 para indicar que o movimento NÃO foi realizado
+    else { return -1; } //retorna 0 para indicar que o movimento NÃO foi realizado
 }
 
+void print_game_over() { //Mensagem personalizada de game over 
+    char game_over[] =
+        "\n"
+        "\n"
+        " $$$$$$\\                                           $$$$$$\\                                 $$\\ \n"
+        "$$  __$$\\                                         $$  __$$\\                                $$ |\n"
+        "$$ /  \\__| $$$$$$\\  $$$$$$\\$$$$\\   $$$$$$\\        $$ /  $$ |$$\\    $$\\  $$$$$$\\   $$$$$$\\  $$ |\n"
+        "$$ |$$$$\\  \\____$$\\ $$  _$$  _$$\\ $$  __$$\\       $$ |  $$ |\\$$\\  $$  |$$  __$$\\ $$  __$$\\ $$ |\n"
+        "$$ |\\_$$ | $$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |      $$ |  $$ | \\$$\\$$  / $$$$$$$$ |$$ |  \\__|\\__|\n"
+        "$$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|      $$ |  $$ |  \\$$$  /  $$   ____|$$ |          \n"
+        "\\$$$$$$  |\\$$$$$$$ |$$ | $$ | $$ |\\$$$$$$$\\        $$$$$$  |   \\$  /   \\$$$$$$$\\ $$ |      $$\\ \n"
+        " \\______/  \\_______|\\__| \\__| \\__| \\_______|       \\______/     \\_/     \\_______|\\__|      \\__|\n"
+        "                                                                                                \n"
+        "                                                                                                \n"
+        "                                                                                                \n";
+
+    printf("%s", game_over);
+}
+
+
+
 int main(void) {
-    gerar_arena(); //Gerar arena da cobrinha
-    adicionar_cobrinha(); //Gerar cobrinha no meio da arena
-    gerar_maçã();//Gerar maçã em uma posição aleatória da arena
-    imprimirTudo(); //Gerar tudo no terminal
+
+
+    printf("  /$$$$$$  /$$$$$$$  /$$$$$$$$       /$$     /$$ /$$$$$$  /$$   /$$       /$$$$$$$  /$$$$$$$$  /$$$$$$  /$$$$$$$  /$$     /$$ /$$$$ \n");
+    Sleep(500); // Atraso de 0.5 segundo (500.000 microssegundos)
+    printf(" /$$__  $$| $$__  $$| $$_____/      |  $$   /$$//$$__  $$| $$  | $$      | $$__  $$| $$_____/ /$$__  $$| $$__  $$|  $$   /$$//$$  $$\n");
+    Sleep(500); // Atraso de 0.5 segundo
+    printf("| $$  \\ $$| $$  \\ $$| $$             \\  $$ /$$/| $$  \\ $$| $$  | $$      | $$  \\ $$| $$      | $$  \\ $$| $$  \\ $$ \\  $$ /$$/|__\\ $$\n");
+    Sleep(500); // Atraso de 0.5 segundo
+    printf("| $$$$$$$$| $$$$$$$/| $$$$$           \\  $$$$/ | $$  | $$| $$  | $$      | $$$$$$$/| $$$$$   | $$$$$$$$| $$  | $$  \\  $$$$/     /$$/\n");
+    Sleep(500); // Atraso de 0.5 segundo
+    printf("| $$__  $$| $$__  $$| $$__/            \\  $$/  | $$  | $$| $$  | $$      | $$__  $$| $$__/   | $$__  $$| $$  | $$   \\  $$/     /$$/ \n");
+    Sleep(500); // Atraso de 0.5 segundo
+    printf("| $$  | $$| $$  \\ $$| $$                | $$   | $$  | $$| $$  | $$      | $$  \\ $$| $$      | $$  | $$| $$  | $$    | $$     |__/  \n");
+    Sleep(500); // Atraso de 0.5 segundo
+    printf("| $$  | $$| $$  | $$| $$$$$$$$          | $$   |  $$$$$$/|  $$$$$$/      | $$  | $$| $$$$$$$$| $$  | $$| $$$$$$$/    | $$      /$$  \n");
+    Sleep(500); // Atraso de 0.5 segundo
+    printf("|__/  |__/|__/  |__/|________/          |__/    \\______/  \\______/       |__/  |__/|________/|__/  |__/|_______/     |__/     |__/   \n");
+    Sleep(500); // Atraso de 0.5 segundo
 
     printf("\n");
-    printf("Digite para onde você quer ir com W-A-S-D: ");
-    scanf_s("%c", &movimento);
-    //printf("%c", movimento); //Testando se o movimento está sendo captado
+    printf("\n");
 
-    while (movimento != 'Q') {
-        if (func_movimento(movimento) == 1) {
-            system("cls || clear || cls"); //Limpa terminal
-            imprimirTudo(); //Gerar tudo no terminal
-        }
-        else {
-            printf("Comando inválido, nenhum movimento foi realizado\n");
-        }
+    printf("                                                 DIGITE \"START\" PARA COMEÇAR: ");
+    scanf_s(" %9s", resposta, 10);
+
+    if (strcmp(resposta, "START") == 0 || strcmp(resposta, "start") == 0 || strcmp(resposta, "Start") == 0) {
+
+        system("cls || clear || cls"); //Limpa terminal
+
+        gerar_arena(); //Gerar arena da cobrinha
+        adicionar_cobrinha(); //Gerar cobrinha no meio da arena
+        gerar_maçã();//Gerar maçã em uma posição aleatória da arena
+        imprimirTudo(); //Gerar tudo no terminal
 
         printf("\n");
         printf("Digite para onde você quer ir com W-A-S-D: ");
         scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
-    }
 
+        while (movimento != 'Q' && movimento != 'q') {
+            int movimento_valido = func_movimento(movimento);
+            if (movimento_valido == 1) {
+                system("cls || clear || cls"); //Limpa terminal
+                imprimirTudo(); //Gerar tudo no terminal
+            }
+            else if (movimento_valido == 0) {
+                system("cls || clear || cls"); //Limpa terminal
+                print_game_over();
+                break;
+            }
+            else {
+                printf("Comando inválido, nenhum movimento foi realizado\n");
+            }
+
+            printf("\n");
+            printf("Digite para onde você quer ir com W-A-S-D: ");
+            scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
+        }
+    }
     return 0;
 }
