@@ -63,7 +63,6 @@ void imprimir() {
 char arena[15][15]; //Layout do jogo
 Posicao cobrinha[169]; //Criando variável chamada "cobrinha" do tipo Posição
 char movimento; //Instrução para movimento da cobrinha
-char resposta[10];
 
 void gerar_arena() {
     int i, j;
@@ -269,105 +268,126 @@ int main(void) {
     printf("\n");
     printf("\n");
 
-    printf("                                         DIGITE \"START\" PARA COMEÇAR: ");
-    scanf_s(" %9s", resposta, 10);
+    char resposta_final[10];
+    memset(resposta_final, '\0', sizeof(resposta_final)); //Limpando resposta_final
+
+    while (1) { // Loop externo para jogar novamente
+        char resposta[10];
+        memset(resposta, '\0', sizeof(resposta)); //Limpando resposta
+
+        printf("                                         DIGITE \"START\" PARA COMEÇAR: ");
+        scanf_s(" %9s", resposta, 10);
 
 
-    //char resposta[] = "start"; //Acesso direto do jogo para facilitar desenvolvimento e testes
-    if (strcmp(resposta, "START") == 0 || strcmp(resposta, "start") == 0 || strcmp(resposta, "Start") == 0) {
+        //char resposta[] = "start"; //Acesso direto do jogo para facilitar desenvolvimento e testes
+        if (strcmp(resposta, "START") == 0 || strcmp(resposta, "start") == 0 || strcmp(resposta, "Start") == 0) {
 
-        int tamanho_cobrinha = 1; //Tamanho 1 pois so tem a cabeça
-        system("cls"); //Limpa terminal
+            int tamanho_cobrinha = 1; //Tamanho 1 pois so tem a cabeça
+            system("cls"); //Limpa terminal
 
-        gerar_arena(); //Gerar arena da cobrinha
-        adicionar_cobrinha(); //Gerar cobrinha no meio da arena
-        gerar_maca();//Gerar maçã em uma posição aleatória da arena
-        imprimirTudo(); //Gerar tudo no terminal
-
-        printf("\n");
-        printf("Digite para onde você quer ir com W-A-S-D: ");
-        scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
-
-        while (movimento != 'Q' && movimento != 'q') {
-
-            if (cobrinha[0].x == linha_maca_global && cobrinha[0].y == coluna_maca_global) {
-                // Incrementar o tamanho da cobrinha
-                inserir('o'); //aumenta cobrinha na lista
-                tamanho_cobrinha++;
-                // Gerar nova posição para a maçã
-                gerar_maca();
-                // Atualizar a visualização da cobrinha e da maçã na matriz da arena
-                imprimirTudo();
-            }
-
-            // Atualize as posições do corpo para seguir a cabeça
-            if (tamanho_cobrinha > 1) {
-                for (int i = tamanho_cobrinha - 1; i > 0; i--) {
-                    cobrinha[i] = cobrinha[i - 1];
-                }
-            }
-
-            int movimento_valido = func_movimento(movimento);
-            int oldx = 0;
-            int oldy = 0;
-
-            if (movimento_valido == 1) {
-
-                system("cls"); //Limpa terminal
-
-                for (int i = 1; i < tamanho_cobrinha; i++) {
-                    arena[cobrinha[i].x][cobrinha[i].y] = 'o'; // Use 'o' (letra minúscula) para representar o corpo da cobrinha
-
-                    oldx = cobrinha[i].x; // Armazena a ultima posição x anterior
-                    oldy = cobrinha[i].y; // Armazena a ultima posição y anterior
-                }
-
-                imprimirTudo(); //Gerar tudo no terminal
-                arena[oldx][oldy] = ' '; // E limpo a ultima posição já que ela não tem mais sentido, nao faz mais parte da cobrinha, é antiga
-            }
-
-            else if (movimento_valido == 0) {
-                system("cls"); //Limpa terminal
-                print_game_over();
-                break;
-            }
-
-            else {
-                printf("Comando inválido, nenhum movimento foi realizado\n");
-            }
+            gerar_arena(); //Gerar arena da cobrinha
+            adicionar_cobrinha(); //Gerar cobrinha no meio da arena
+            gerar_maca();//Gerar maçã em uma posição aleatória da arena
+            imprimirTudo(); //Gerar tudo no terminal
 
             printf("\n");
-
-
-            int ajuda = 0;//Para quebrar o while de fora
-            for (int i = 1; i < tamanho_cobrinha; i++) { //Vendo todas as posições da cobrinha
-                if (cobrinha[0].x == cobrinha[i].x && cobrinha[0].y == cobrinha[i].y) { //Checado se a cabeça da cobrinha colidiu com o corpo
-                    system("cls"); //Limpa terminal
-                    print_game_over();
-                    ajuda = 1;//Para quebrar o while de fora
-                    break;
-                }
-            }
-
-            if (ajuda == 1) { //Para quebrar o while de fora
-                break; //Quebra o while de fora
-            }
-
-            for (int i = 0; i < 169; i++) { //testando condição de vitória
-                inserir('o');
-            }
-
-            if (tamanho() == 169) {
-                system("cls"); //Limpa terminal
-                print_vitoria();
-                break;
-            }
-
             printf("Digite para onde você quer ir com W-A-S-D: ");
             scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
 
-        } //chave do while
-    } //chave do if
+            while (movimento != 'Q' && movimento != 'q') {
 
+                if (cobrinha[0].x == linha_maca_global && cobrinha[0].y == coluna_maca_global) {
+                    // Incrementar o tamanho da cobrinha
+                    inserir('o'); //aumenta cobrinha na lista
+                    tamanho_cobrinha++;
+                    // Gerar nova posição para a maçã
+                    gerar_maca();
+                    // Atualizar a visualização da cobrinha e da maçã na matriz da arena
+                    imprimirTudo();
+                }
+
+                // Atualize as posições do corpo para seguir a cabeça
+                if (tamanho_cobrinha > 1) {
+                    for (int i = tamanho_cobrinha - 1; i > 0; i--) {
+                        cobrinha[i] = cobrinha[i - 1];
+                    }
+                }
+
+                int movimento_valido = func_movimento(movimento);
+                int oldx = 0;
+                int oldy = 0;
+
+                if (movimento_valido == 1) {
+
+                    system("cls"); //Limpa terminal
+
+                    for (int i = 1; i < tamanho_cobrinha; i++) {
+                        arena[cobrinha[i].x][cobrinha[i].y] = 'o'; // Use 'o' (letra minúscula) para representar o corpo da cobrinha
+
+                        oldx = cobrinha[i].x; // Armazena a ultima posição x anterior
+                        oldy = cobrinha[i].y; // Armazena a ultima posição y anterior
+                    }
+
+                    imprimirTudo(); //Gerar tudo no terminal
+                    arena[oldx][oldy] = ' '; // E limpo a ultima posição já que ela não tem mais sentido, nao faz mais parte da cobrinha, é antiga
+                }
+
+                else if (movimento_valido == 0) {
+                    system("cls"); //Limpa terminal
+                    print_game_over();
+                    break;
+                }
+
+                else {
+                    printf("Comando inválido, nenhum movimento foi realizado\n");
+                }
+
+                printf("\n");
+
+
+                int ajuda = 0;//Para quebrar o while de fora
+                for (int i = 1; i < tamanho_cobrinha; i++) { //Vendo todas as posições da cobrinha
+                    if (cobrinha[0].x == cobrinha[i].x && cobrinha[0].y == cobrinha[i].y) { //Checado se a cabeça da cobrinha colidiu com o corpo
+                        system("cls"); //Limpa terminal
+                        print_game_over();
+                        ajuda = 1;//Para quebrar o while de fora
+                        break;
+                    }
+                }
+
+                if (ajuda == 1) { //Para quebrar o while de fora
+                    break; //Quebra o while de fora
+                }
+
+                /*for (int i = 0; i < 169; i++) { //testando condição de vitória
+                    inserir('o');
+                }*/
+
+                if (tamanho() == 169) {
+                    system("cls"); //Limpa terminal
+                    print_vitoria();
+                    break;
+                }
+
+                printf("Digite para onde você quer ir com W-A-S-D: ");
+                scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
+
+            } //chave do while
+        } //chave do if
+
+        printf("Digite \"Sim\" para jogar novamente ou \"Não\" para parar: ");
+        scanf_s(" %9s", resposta_final, 10);
+        if (strcmp(resposta_final, "Sim") == 0 || strcmp(resposta_final, "sim") == 0 || strcmp(resposta_final, "SIM") == 0) {
+            system("cls"); //Limpa terminal
+            continue;
+        }
+        else {
+            system("cls"); //Limpa terminal
+            printf("                                               Obrigado por jogar! <3");
+            printf("\n");
+            break;
+        }
+
+    } //chave do while externo
     return 0;
 } //chave do main
