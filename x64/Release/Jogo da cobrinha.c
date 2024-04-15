@@ -21,6 +21,7 @@ void imprimirTudo();
 int func_movimento(char direcao);
 void print_game_over();
 void print_vitoria();
+void print_intrucoes();
 //Estruturando cobrinha em forma de lista ordenada -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 const unsigned MAX = 169; //Tamanho da arena tirando as bordas
@@ -242,14 +243,76 @@ void print_game_over() { //Mensagem personalizada de game over
     printf("%s", game_over);
 }
 
+void print_intrucoes(){
+    char instrucoes[] =
+        "-> A cabeça da sua cobrinha é um \"O\" maiúsculo!\n"
+        "-> O corpo da sua cobrinha é um \"o\" miníscuclo!\n"
+        "-> Você irá perder se sua cobrinha tocar na parede ou nela mesma\n"
+        "-> Seu objetivo é comer a maçã representada pelo caractere \"@\" \n"
+        "\n"
+        "-> A movimentação da cobrinha se da pela digitação das teclas \'W\'-\'A\'-\'S\'-\'D\' e um enter onde:\n"
+        "   -> W é para cima \n"
+        "   -> A é para esquerda \n"
+        "   -> S é para baixo \n"
+        "   -> D é para direita \n"
+        "-> E se você ainda quiser andar várias vezes numa única linha você pode digitar a tecla múltiplas vezes\n"
+        "   -> Exemplo: wwwww (andar para cima 5 vezes) \n"
+        "-> Se quiser parar o jogo durante a movimentação você também pode digitar \'Q\' ou \'q\':\n"
+        "\n"
+        "-> Ganhar é difícil, mas é possível! Sua cobrinha tem que completar todo o espaço possível da arena sem bater nela mesma ou na parede\n"
+        "\n"
+        "                                                   É isso, te desejo sorte avetureiro!";
+
+    printf("%s", instrucoes);
+}
 
 
 int main(void) {
 
+    char resposta_inicial[10];
+    memset(resposta_inicial, '\0', sizeof(resposta_inicial)); //Limpando resposta_final
+    printf("Importante: \n");
+    printf("Ajuste a resolução do console ou terminal para um tamanho de um retângulo bem grande, 1250p x 650p é o suficiente!\n");
+    printf("\n");
+    Sleep(4000); // Atraso de 4 segundos
+    printf("?- Olá!! Seja muito bem vindo ao jogo da cobrinha, meu nome é Ronaldo!\n");
+    Sleep(3000); // Atraso de 3 segundos
+    printf("R- Esse joguinho é o meu projeto da disciplina de Estrutura de Dados, meu professor é o Victor <3\n");
+    Sleep(3000); // Atraso de 3 segundos
+    printf("R- Faço Engenharia de Computação no IFPB-CG\n");
+    Sleep(3000); // Atraso de 3 segundos
+    printf("R- Esse projeto é feito em linguagem C e o conteúdo visto em listas sequenciais lineares ordenadas\n");
+    Sleep(3000); // Atraso de 3 segundos
+    printf("R- Vamos às intruções >:)\n");
+    Sleep(1000); // Atraso de 1 segundo
+    
+    printf("\n");
+    printf("                           Pular instruções? Digite \'sim\' ou \'não\': ");
+
+    scanf_s(" %9s", resposta_inicial, 10);
+
+    if (strcmp(resposta_inicial, "Não") == 0 || strcmp(resposta_inicial, "não") == 0 || strcmp(resposta_inicial, "NÃO") == 0 || strcmp(resposta_inicial, "nao") == 0){
+        system("cls"); //Limpa terminal
+        print_intrucoes();
+        printf("\n");
+        printf("\n");
+        printf("                                                     Digite \"go\" para continuar: ");
+        char resposta_continuar[10];
+        scanf_s(" %9s", resposta_continuar, 10);
+        if (strcmp(resposta_continuar, "go") == 0 || strcmp(resposta_continuar, "Go") == 0 || strcmp(resposta_continuar, "GO") == 0) { Sleep(10); }
+        else{ Sleep(400000); } //Atraso de 400 segundos pois o usuário quer ler
+
+        system("cls"); //Limpa terminal
+    }
+    
+    else {
+        system("cls"); //Limpa terminal
+    }
+
     //Terminal em 1250 x 650 pixels de resolução para a melhor visualização
 
     printf("  /$$$$$$  /$$$$$$$  /$$$$$$$$       /$$     /$$ /$$$$$$  /$$   /$$       /$$$$$$$  /$$$$$$$$  /$$$$$$  /$$$$$$$  /$$     /$$ /$$$$ \n");
-    Sleep(500); // Atraso de 0.5 segundo (500.000 microssegundos)
+    Sleep(500); // Atraso de 0.5 segundo 
     printf(" /$$__  $$| $$__  $$| $$_____/      |  $$   /$$//$$__  $$| $$  | $$      | $$__  $$| $$_____/ /$$__  $$| $$__  $$|  $$   /$$//$$  $$\n");
     Sleep(500); // Atraso de 0.5 segundo
     printf("| $$  \\ $$| $$  \\ $$| $$             \\  $$ /$$/| $$  \\ $$| $$  | $$      | $$  \\ $$| $$      | $$  \\ $$| $$  \\ $$ \\  $$ /$$/|__\\ $$\n");
@@ -271,14 +334,13 @@ int main(void) {
     char resposta_final[10];
     memset(resposta_final, '\0', sizeof(resposta_final)); //Limpando resposta_final
 
+    char resposta[10];
+    memset(resposta, '\0', sizeof(resposta)); //Limpando resposta
+
+    printf("                                         DIGITE \"START\" PARA COMEÇAR: ");
+    scanf_s(" %9s", resposta, 10);
+
     while (1) { // Loop externo para jogar novamente
-        char resposta[10];
-        memset(resposta, '\0', sizeof(resposta)); //Limpando resposta
-
-        printf("                                         DIGITE \"START\" PARA COMEÇAR: ");
-        scanf_s(" %9s", resposta, 10);
-
-
         //char resposta[] = "start"; //Acesso direto do jogo para facilitar desenvolvimento e testes
         if (strcmp(resposta, "START") == 0 || strcmp(resposta, "start") == 0 || strcmp(resposta, "Start") == 0) {
 
@@ -383,7 +445,7 @@ int main(void) {
         }
         else {
             system("cls"); //Limpa terminal
-            printf("                                               Obrigado por jogar! <3");
+            printf("                                                               Obrigado por jogar! <3");
             printf("\n");
             break;
         }
