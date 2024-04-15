@@ -95,16 +95,19 @@ void gerar_maca() {
 
     //Ja que a area de fato do jogo é 13x13:
 
-    int linha_aleatoria = rand() % (linhas - 2) + 1;
-    // Evita as bordas superior e inferior
+    int linha_aleatoria, coluna_aleatoria;
 
-    int coluna_aleatoria = rand() % (colunas - 2) + 1;
-    // Evita as bordas esquerda e direita
+    //Faça enquanto, aprendi para corrigir o bug em que a maçã surge na cobrinha e desaparece do jogo depois
+    do {
+        linha_aleatoria = rand() % (linhas - 2) + 1; // Evita as bordas superior e inferior
+        coluna_aleatoria = rand() % (colunas - 2) + 1; // Evita as bordas esquerda e direita
+    } while (arena[linha_aleatoria][coluna_aleatoria] != ' '); // Enquanto a posição nao for um espaço em branco continue gerando
 
     //linha_aleatoria = 7; //teste
     //coluna_aleatoria = 7; //teste
 
     if (linha_aleatoria == 7 && coluna_aleatoria == 7) { linha_aleatoria--; } //Caso a maçã apareça na posição inicial no início do jogo
+
     // Coloca um símbolo aleatório na posição aleatória
     char maca = '@';
     arena[linha_aleatoria][coluna_aleatoria] = maca;
@@ -246,8 +249,6 @@ int main(void) {
         printf("\n");
         printf("Digite para onde você quer ir com W-A-S-D: ");
         scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
-
-        int colisao = 0; // Variável de controle para detecção de colisão
 
         while (movimento != 'Q' && movimento != 'q') {
 
