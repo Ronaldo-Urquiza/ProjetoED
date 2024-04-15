@@ -132,6 +132,9 @@ void imprimirTudo() {
 }
 
 int func_movimento(char direcao) {
+     
+    arena[0][0] = '#'; //Hotfix: bug do terminal em que o # superior esquerdo some
+
     // Lê o movimento do jogador
     if (direcao == 'W' || direcao == 'w') { //Indo para cima
         arena[cobrinha[0].x][cobrinha[0].y] = ' ';
