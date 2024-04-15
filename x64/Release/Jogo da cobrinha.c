@@ -22,6 +22,7 @@ int func_movimento(char direcao);
 void print_game_over();
 void print_vitoria();
 void print_intrucoes();
+int verifica_colisao(int tamanho_cobrinha, Posicao cobrinha[]);
 //Estruturando cobrinha em forma de lista ordenada -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 const unsigned MAX = 169; //Tamanho da arena tirando as bordas
@@ -184,7 +185,7 @@ int func_movimento(char direcao) {
         arena[cobrinha[0].x][cobrinha[0].y] = 'O'; //Atualiza cobrinha na matriz
         return 1; //retorna 1 para indicar que o movimento foi realizado
     }
-    else { return -1; } //retorna 0 para indicar que o movimento NÃO foi realizado
+    else { return 2; } //retorna -1 para indicar que o movimento NÃO foi realizado
 }
 
 void print_vitoria() {
@@ -266,9 +267,18 @@ void print_intrucoes(){
     printf("%s", instrucoes);
 }
 
+int verifica_colisao(int tamanho_cobrinha, Posicao cobrinha[]) {
+    for (int i = 1; i < tamanho_cobrinha; i++) {
+        if (cobrinha[0].x == cobrinha[i].x && cobrinha[0].y == cobrinha[i].y) {
+            return 1; // Colisão detectada
+        }
+    }
+    return 0; // Sem colisão
+}
+
 
 int main(void) {
-
+    
     char resposta_inicial[10];
     memset(resposta_inicial, '\0', sizeof(resposta_inicial)); //Limpando resposta_final
     printf("Importante: \n");
@@ -277,7 +287,7 @@ int main(void) {
     Sleep(4000); // Atraso de 4 segundos
     printf("?- Olá!! Seja muito bem vindo ao jogo da cobrinha, meu nome é Ronaldo!\n");
     Sleep(3000); // Atraso de 3 segundos
-    printf("R- Esse joguinho é o meu projeto da disciplina de Estrutura de Dados, meu professor é o Victor <3\n");
+    printf("R- Esse joguinho é o meu projeto da disciplina de Estrutura de Dados, meu professor é o Victor André!\n");
     Sleep(3000); // Atraso de 3 segundos
     printf("R- Faço Engenharia de Computação no IFPB-CG\n");
     Sleep(3000); // Atraso de 3 segundos
@@ -285,7 +295,6 @@ int main(void) {
     Sleep(3000); // Atraso de 3 segundos
     printf("R- Vamos às intruções >:)\n");
     Sleep(1000); // Atraso de 1 segundo
-    
     printf("\n");
     printf("                           Pular instruções? Digite \'sim\' ou \'não\': ");
 
@@ -310,7 +319,6 @@ int main(void) {
     }
 
     //Terminal em 1250 x 650 pixels de resolução para a melhor visualização
-
     printf("  /$$$$$$  /$$$$$$$  /$$$$$$$$       /$$     /$$ /$$$$$$  /$$   /$$       /$$$$$$$  /$$$$$$$$  /$$$$$$  /$$$$$$$  /$$     /$$ /$$$$ \n");
     Sleep(500); // Atraso de 0.5 segundo 
     printf(" /$$__  $$| $$__  $$| $$_____/      |  $$   /$$//$$__  $$| $$  | $$      | $$__  $$| $$_____/ /$$__  $$| $$__  $$|  $$   /$$//$$  $$\n");
@@ -327,7 +335,6 @@ int main(void) {
     Sleep(500); // Atraso de 0.5 segundo
     printf("|__/  |__/|__/  |__/|________/          |__/    \\______/  \\______/       |__/  |__/|________/|__/  |__/|_______/     |__/     |__/   \n");
     Sleep(500); // Atraso de 0.5 segundo
-
     printf("\n");
     printf("\n");
 
@@ -355,9 +362,11 @@ int main(void) {
             printf("\n");
             printf("Digite para onde você quer ir com W-A-S-D: ");
             scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
+           
+            
+            while (movimento != 'Q' || movimento != 'q') {
 
-            while (movimento != 'Q' && movimento != 'q') {
-
+                int auxbug = 0; //Hotfix: Se usuário digitasse algo fora de W A S D dava game over ao invés d tente novamente
                 if (cobrinha[0].x == linha_maca_global && cobrinha[0].y == coluna_maca_global) {
                     // Incrementar o tamanho da cobrinha
                     inserir('o'); //aumenta cobrinha na lista
@@ -374,8 +383,9 @@ int main(void) {
                         cobrinha[i] = cobrinha[i - 1];
                     }
                 }
-
+                
                 int movimento_valido = func_movimento(movimento);
+
                 int oldx = 0;
                 int oldy = 0;
 
@@ -394,25 +404,31 @@ int main(void) {
                     arena[oldx][oldy] = ' '; // E limpo a ultima posição já que ela não tem mais sentido, nao faz mais parte da cobrinha, é antiga
                 }
 
+                else if (movimento_valido == 2) {
+                    // Se a tecla pressionada não for uma das esperadas, não faz nada
+                    printf("Movimento inválido, nada aconteceu!");
+                    auxbug = 1; //Hotfix: Se usuário digitasse algo fora de W A S D dava game over ao invés d tente novamente
+                }
+
                 else if (movimento_valido == 0) {
+                    // Se bateu na parede
                     system("cls"); //Limpa terminal
                     print_game_over();
                     break;
                 }
 
-                else {
-                    printf("Comando inválido, nenhum movimento foi realizado\n");
-                }
+                else { break; }
 
                 printf("\n");
 
-
-                int ajuda = 0;//Para quebrar o while de fora
-                for (int i = 1; i < tamanho_cobrinha; i++) { //Vendo todas as posições da cobrinha
-                    if (cobrinha[0].x == cobrinha[i].x && cobrinha[0].y == cobrinha[i].y) { //Checado se a cabeça da cobrinha colidiu com o corpo
-                        system("cls"); //Limpa terminal
+                int ajuda = 0;
+                if (auxbug == 0) { //Hotfix: Se usuário digitasse algo fora de W A S D dava game over ao invés d tente novamente
+                    if (verifica_colisao(tamanho_cobrinha, cobrinha) == 1) {// Colisão com o corpo
+                        system("cls");
+                        //printf("Colisão detectada!\n");
+                        //Sleep(500);
                         print_game_over();
-                        ajuda = 1;//Para quebrar o while de fora
+                        ajuda = 1;
                         break;
                     }
                 }
@@ -433,6 +449,7 @@ int main(void) {
 
                 printf("Digite para onde você quer ir com W-A-S-D: ");
                 scanf_s(" %c", &movimento); // Adicionado espaço antes do %c para consumir o caractere de nova linha
+                
 
             } //chave do while
         } //chave do if
